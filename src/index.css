@@ -1,0 +1,365 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 16% 96%;
+    --foreground: 220 30% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 220 30% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 30% 10%;
+    --primary: 221 83% 53%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 215 28% 92%;
+    --secondary-foreground: 220 30% 18%;
+    --muted: 215 25% 93%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 215 28% 92%;
+    --accent-foreground: 220 30% 18%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214 32% 88%;
+    --input: 214 32% 88%;
+    --ring: 221 83% 53%;
+    --radius: 0.75rem;
+
+    /* Custom CRM tokens */
+    --sidebar-bg: 220 26% 14%;
+    --sidebar-border: 220 20% 20%;
+    --sidebar-item-hover: 220 20% 20%;
+    --sidebar-item-active: 221 83% 53%;
+    --topbar-bg: 0 0% 100%;
+    --page-bg: 220 16% 96%;
+    --card-glow: 221 83% 53%;
+    
+    /* Status colors */
+    --status-active: 152 71% 40%;
+    --status-paused: 43 96% 46%;
+    --status-completed: 215 16% 55%;
+    --status-draft: 221 83% 53%;
+  }
+
+  .dark {
+    --background: 220 26% 7%;
+    --foreground: 210 30% 94%;
+    --card: 220 22% 10%;
+    --card-foreground: 210 30% 94%;
+    --popover: 220 22% 10%;
+    --popover-foreground: 210 30% 94%;
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 217 20% 16%;
+    --secondary-foreground: 210 30% 90%;
+    --muted: 217 20% 16%;
+    --muted-foreground: 215 20% 55%;
+    --accent: 217 20% 16%;
+    --accent-foreground: 210 30% 90%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 220 18% 18%;
+    --input: 220 18% 18%;
+    --ring: 213 27% 84%;
+
+    --sidebar-bg: 220 26% 7%;
+    --sidebar-border: 220 18% 14%;
+    --topbar-bg: 220 22% 9%;
+    --page-bg: 220 26% 7%;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  html { scroll-behavior: smooth; }
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ─── Custom Scrollbar ─────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground) / 0.5); }
+
+/* ─── CRM Glass Card ───────────────────────────────────────────────────────── */
+@layer components {
+  .crm-card {
+    @apply bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  }
+  .crm-card:hover {
+    @apply shadow-md border-slate-300 dark:border-slate-700;
+  }
+
+  .crm-card-glow {
+    @apply crm-card;
+    position: relative;
+    overflow: hidden;
+  }
+  .crm-card-glow::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, hsl(221 83% 53% / 0.5), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .crm-card-glow:hover::before { opacity: 1; }
+
+  /* Stat cards */
+  .stat-card {
+    @apply crm-card p-5 cursor-default;
+  }
+  .stat-card:hover {
+    @apply -translate-y-0.5;
+  }
+
+  /* Sidebar nav item */
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 relative;
+    @apply text-slate-500 dark:text-slate-400;
+  }
+  .nav-item:hover {
+    @apply bg-slate-100 dark:bg-slate-800/70 text-slate-900 dark:text-white;
+  }
+  .nav-item.active {
+    @apply bg-blue-600 text-white shadow-md;
+    box-shadow: 0 4px 14px hsl(221 83% 53% / 0.35);
+  }
+  .nav-item .nav-icon { @apply w-[18px] h-[18px] shrink-0; }
+
+  /* Premium badge */
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold;
+  }
+  .badge-active { @apply badge bg-emerald-50 text-emerald-700 dark:bg-emerald-500/15 dark:text-emerald-400; }
+  .badge-paused { @apply badge bg-amber-50 text-amber-700 dark:bg-amber-500/15 dark:text-amber-400; }
+  .badge-completed { @apply badge bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400; }
+  .badge-draft { @apply badge bg-blue-50 text-blue-700 dark:bg-blue-500/15 dark:text-blue-400; }
+  .badge-hot { @apply badge bg-rose-50 text-rose-700 dark:bg-rose-500/15 dark:text-rose-400; }
+
+  /* Premium button */
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-xl transition-all duration-200;
+    box-shadow: 0 2px 8px hsl(221 83% 53% / 0.3);
+  }
+  .btn-primary:hover { box-shadow: 0 4px 16px hsl(221 83% 53% / 0.4); transform: translateY(-1px); }
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 text-sm font-medium rounded-xl transition-all duration-200;
+  }
+  .btn-secondary:hover { @apply bg-slate-50 dark:bg-slate-700/70 border-slate-300 dark:border-slate-600; }
+
+  .btn-ghost {
+    @apply inline-flex items-center gap-2 px-3 py-2 text-slate-500 dark:text-slate-400 text-sm font-medium rounded-xl transition-all duration-200;
+  }
+  .btn-ghost:hover { @apply bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200; }
+
+  /* Form input */
+  .crm-input {
+    @apply w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white placeholder-slate-400 text-sm;
+    @apply focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 outline-none transition-all duration-200;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    @apply h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden;
+  }
+  .progress-fill {
+    @apply h-full rounded-full transition-all duration-500 ease-out;
+    background: linear-gradient(90deg, hsl(221 83% 53%), hsl(217 91% 65%));
+  }
+
+  /* Live pulse dot */
+  .live-dot {
+    @apply w-2 h-2 rounded-full bg-emerald-500 relative;
+  }
+  .live-dot::after {
+    content: '';
+    @apply absolute inset-0 rounded-full bg-emerald-500 animate-ping opacity-75;
+  }
+
+  /* Table row */
+  .table-row-hover {
+    @apply hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors duration-150;
+  }
+
+  /* Section header */
+  .section-title {
+    @apply text-xl font-bold text-slate-900 dark:text-white tracking-tight;
+  }
+  .section-subtitle {
+    @apply text-sm text-slate-500 dark:text-slate-400 mt-0.5;
+  }
+
+  /* Tag chip */
+  .chip {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-medium rounded-lg;
+  }
+
+  /* Divider */
+  .crm-divider { @apply border-t border-slate-100 dark:border-slate-800; }
+
+  /* Skeleton loader */
+  .skeleton {
+    @apply bg-slate-200 dark:bg-slate-700 animate-pulse rounded-lg;
+  }
+
+  /* Tooltip */
+  .tooltip-trigger { @apply relative; }
+  
+  /* KPI number */
+  .kpi-value { @apply text-3xl font-black text-slate-900 dark:text-white tabular-nums; }
+  .kpi-label { @apply text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider; }
+  .kpi-trend-up { @apply text-xs font-semibold text-emerald-600 dark:text-emerald-400; }
+  .kpi-trend-down { @apply text-xs font-semibold text-rose-600 dark:text-rose-400; }
+
+  /* Modal */
+  .modal-overlay {
+    @apply fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm;
+    animation: fadeIn 0.15s ease;
+  }
+  .modal-panel {
+    @apply bg-white dark:bg-slate-900 w-full rounded-2xl shadow-2xl;
+    animation: scaleIn 0.2s ease;
+  }
+
+  /* Tab */
+  .crm-tab {
+    @apply px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200;
+    @apply text-slate-500 dark:text-slate-400;
+  }
+  .crm-tab:hover { @apply text-slate-700 dark:text-slate-200; }
+  .crm-tab.active {
+    @apply bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm;
+  }
+
+  /* Transcript bubble */
+  .bubble-ai {
+    @apply bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-200 rounded-2xl rounded-tl-sm shadow-sm;
+  }
+  .bubble-customer {
+    @apply bg-gradient-to-br from-blue-600 to-indigo-600 text-white rounded-2xl rounded-tr-sm shadow-sm;
+  }
+
+  /* Action bar */
+  .action-bar {
+    @apply flex items-center gap-2 p-3 bg-slate-50 dark:bg-slate-900/60 border-t border-slate-100 dark:border-slate-800 rounded-b-2xl;
+  }
+
+  /* Campaign card */
+  .campaign-card {
+    @apply crm-card flex flex-col overflow-hidden;
+  }
+  .campaign-card-header {
+    @apply p-5 border-b border-slate-100 dark:border-slate-800;
+  }
+  .campaign-card-body {
+    @apply p-5 flex-1;
+  }
+  .campaign-card-footer {
+    @apply action-bar;
+  }
+}
+
+/* ─── Animations ────────────────────────────────────────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-fade-in { animation: fadeIn 0.3s ease forwards; }
+.animate-slide-down { animation: slideDown 0.3s ease forwards; }
+.animate-slide-up { animation: slideUp 0.3s ease forwards; }
+.animate-scale-in { animation: scaleIn 0.25s ease forwards; }
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 50%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Animated gradient background */
+.gradient-bg-animated {
+  background: linear-gradient(135deg, #1e3a5f, #1a2744, #0f172a, #1e1040);
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+/* Sidebar gradient accent */
+.sidebar-accent-line {
+  background: linear-gradient(180deg, #3b82f6, #6366f1, #8b5cf6);
+}
+
+/* Premium glow effects */
+.glow-blue { box-shadow: 0 0 30px hsl(221 83% 53% / 0.25); }
+.glow-emerald { box-shadow: 0 0 30px hsl(152 71% 40% / 0.25); }
+.glow-purple { box-shadow: 0 0 30px hsl(258 90% 66% / 0.25); }
+
+/* Glass effect for specific elements */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.dark .glass {
+  background: rgba(15, 23, 42, 0.7);
+}
+
+/* Mono font for numbers/code */
+.font-mono-nums { font-family: 'JetBrains Mono', monospace; }
+
+/* ─── Landing Page Specific ─────────────────────────────────────────────────── */
+.hero-grid {
+  background-image: 
+    linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.feature-card {
+  @apply relative p-6 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-hidden;
+  transition: all 0.3s ease;
+}
+.feature-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(circle at top left, hsl(221 83% 53% / 0.08), transparent 60%);
+}
+.feature-card:hover { @apply -translate-y-1 shadow-lg border-blue-200 dark:border-blue-800/50; }
+.feature-card:hover::after { opacity: 1; }
