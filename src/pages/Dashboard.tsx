@@ -120,7 +120,7 @@ export default function Dashboard() {
             trend: "+12%",
             colorClass: "bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400",
             gradient: "bg-gradient-to-r from-blue-500 to-blue-600",
-            subText: "Total calls initiated"
+            subText: `${stats.totalCalls || 0} Total Calls All-Time`
           },
           {
             title: "Interested Leads",

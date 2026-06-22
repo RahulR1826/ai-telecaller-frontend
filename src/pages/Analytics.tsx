@@ -37,7 +37,7 @@ export default function Analytics() {
   ] : [];
 
   const kpis = stats ? [
-    { label: "Total Calls", value: stats.todayCalls, icon: PhoneCall, color: "text-blue-500", bg: "bg-blue-50 dark:bg-blue-500/10" },
+    { label: "Today's Calls", value: stats.todayCalls, subValue: `${stats.totalCalls} All-Time`, icon: PhoneCall, color: "text-blue-500", bg: "bg-blue-50 dark:bg-blue-500/10" },
     { label: "Conversions", value: stats.interested, icon: Users, color: "text-emerald-500", bg: "bg-emerald-50 dark:bg-emerald-500/10" },
     { label: "Avg Duration", value: stats.avgDuration, icon: Clock, color: "text-amber-500", bg: "bg-amber-50 dark:bg-amber-500/10" },
     { label: "Conv. Rate", value: stats.conversionRate, icon: TrendingUp, color: "text-purple-500", bg: "bg-purple-50 dark:bg-purple-500/10" },
@@ -53,13 +53,16 @@ export default function Analytics() {
       {/* KPI Row */}
       {stats && (
         <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
-          {kpis.map(({ label, value, icon: Icon, color, bg }) => (
+          {kpis.map(({ label, value, subValue, icon: Icon, color, bg }) => (
             <div key={label} className="crm-card p-5">
               <div className={`w-10 h-10 rounded-xl ${bg} ${color} flex items-center justify-center mb-3`}>
                 <Icon className="w-5 h-5" />
               </div>
               <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">{label}</p>
-              <p className="text-2xl font-black text-slate-900 dark:text-white mt-1 tabular-nums">{value ?? "—"}</p>
+              <div className="flex items-baseline gap-2">
+                <p className="text-2xl font-black text-slate-900 dark:text-white mt-1 tabular-nums">{value ?? "—"}</p>
+                {subValue && <span className="text-xs font-medium text-slate-400 tabular-nums">{subValue}</span>}
+              </div>
             </div>
           ))}
         </div>

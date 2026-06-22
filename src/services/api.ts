@@ -133,8 +133,9 @@ export const getDashboardStats = async () => {
     const seconds = data.avgDurationSec % 60;
     
     return {
-      todayCalls: data.totalCalls || 0,
-      completed: (data.totalCalls || 0) - (data.liveCount || 0),
+      todayCalls: data.todayCalls || 0,
+      totalCalls: data.totalCalls || 0,
+      completed: (data.todayCalls || 0) - (data.liveCount || 0),
       active: data.liveCount || 0,
       interested: data.conversions || 0,
       callbacks: data.sentiment?.positive || 0,
@@ -146,6 +147,7 @@ export const getDashboardStats = async () => {
     console.error("Failed to fetch dashboard stats", err);
     return {
       todayCalls: 0,
+      totalCalls: 0,
       completed: 0,
       active: 0,
       interested: 0,
